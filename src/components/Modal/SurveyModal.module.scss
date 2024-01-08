@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.container__header {
+    display: flex;
+    flex-direction: column;
+}
+
+.container__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.container__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
