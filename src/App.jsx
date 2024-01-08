@@ -6,8 +6,6 @@ import styles from './App.module.scss';
 
 function App() {
 	const [isOpen, setIsOpen] = useState(false);
-	const [toggle, setToggle] = useState(false);
-	const [currentStep, setCurrentStep] = useState(0);
 
 	// 모달의 toggle 'X' button 제어하는 함수
 	const handleToggle = () => {
@@ -15,18 +13,6 @@ function App() {
 		setIsOpen((prevOpen) => {
 			return !prevOpen;
 		});
-		setToggle((prevToggle) => {
-			return !prevToggle;
-		});
-	};
-
-	// 모달 다음 버튼 눌렀을 경우
-
-	const moveToPrevStep = () => {
-		setCurrentStep(currentStep - 1);
-	};
-	const moveToNextStep = () => {
-		setCurrentStep(currentStep + 1);
 	};
 
 	return (

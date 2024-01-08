@@ -1,0 +1,20 @@
+const FIRST_STEP = 1;
+
+const LAST_STEP = 4;
+
+const SUBMIT_STEP = 4;
+
+const FIRST_INDEX = FIRST_STEP - 1;
+
+const LAST_INDEX = LAST_STEP - 1;
+
+const SUBMIT_INDEX = SUBMIT_STEP - 1;
+
+export default {
+	FIRST_STEP,
+	LAST_STEP,
+	SUBMIT_STEP,
+	FIRST_INDEX,
+	LAST_INDEX,
+	SUBMIT_INDEX,
+};
