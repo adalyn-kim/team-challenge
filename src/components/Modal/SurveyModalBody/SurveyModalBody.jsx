@@ -155,12 +155,12 @@ SurveyModalBody.Step1 = ({ formData, changeFormData, checkAllAgreements }) => {
 	);
 };
 
-SurveyModalBody.Step2 = () => {
-	const [isUsedGoorm, setIsUsedGoorm] = useState(null);
+SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
+	const [isUsedGoorm, setIsUsedGoorm] = useState(undefined);
 
-	const toggleIsUsedGoorm = (e) => {
+	const toggleIsUsedGoorm = () => {
 		setIsUsedGoorm((usedGoorm) => {
-			return e.target.value === 'yes' ? 'yes' : 'no';
+			return !usedGoorm;
 		});
 	};
 
@@ -180,10 +180,32 @@ SurveyModalBody.Step2 = () => {
 						<Label required>1. SW학과를 전공하셨나요?</Label>
 						<Form.Group>
 							<div className={cn(styles.container__step2__btns)}>
-								<Button color="basic" size="lg" block>
+								<Button
+									color="basic"
+									size="lg"
+									block
+									value={formData.isMajor}
+									active={formData.isMajor}
+									onClick={() => {
+										return changeFormData({
+											isMajor: true,
+										});
+									}}
+								>
 									전공
 								</Button>
-								<Button color="basic" size="lg" block>
+								<Button
+									color="basic"
+									size="lg"
+									block
+									value={!formData.isMajor}
+									active={!formData.isMajor}
+									onClick={() => {
+										return changeFormData({
+											isMajor: false,
+										});
+									}}
+								>
 									비전공
 								</Button>
 							</div>
@@ -196,25 +218,35 @@ SurveyModalBody.Step2 = () => {
 						<Form.Group>
 							<div className={cn(styles.container__step2__btns)}>
 								<Button
-									value="yes"
 									color="basic"
 									size="lg"
 									block
-									active={isUsedGoorm === 'yes'}
-									onClick={(e) => {
-										return toggleIsUsedGoorm(e);
+									value={formData.goorm.useGoorm}
+									active={formData.goorm.useGoorm}
+									onClick={() => {
+										return changeFormData({
+											goorm: {
+												...formData.goorm,
+												useGoorm: true,
+											},
+										});
 									}}
 								>
 									예
 								</Button>
 								<Button
-									value="no"
 									color="basic"
 									size="lg"
 									block
-									active={isUsedGoorm === 'no'}
-									onClick={(e) => {
-										return toggleIsUsedGoorm(e);
+									value={!formData.goorm.useGoorm}
+									active={!formData.goorm.useGoorm}
+									onClick={() => {
+										return changeFormData({
+											goorm: {
+												...formData.goorm,
+												useGoorm: false,
+											},
+										});
 									}}
 								>
 									아니오
@@ -222,7 +254,7 @@ SurveyModalBody.Step2 = () => {
 							</div>
 						</Form.Group>
 					</div>
-					{isUsedGoorm === 'yes' && (
+					{formData.goorm.useGoorm && (
 						<>
 							<div
 								className={cn(
