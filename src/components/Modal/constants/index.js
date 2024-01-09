@@ -12,6 +12,9 @@ const SUBMIT_INDEX = SUBMIT_STEP - 1;
 
 const TEXTAREA_ROWS = 4;
 
+const SERVICE_LIST_1 = ['EDU', 'LEVEL', 'DEVTH'];
+const SERVICE_LIST_2 = ['IDE', 'EXP', ''];
+
 export default {
 	FIRST_STEP,
 	LAST_STEP,
@@ -20,4 +23,6 @@ export default {
 	LAST_INDEX,
 	SUBMIT_INDEX,
 	TEXTAREA_ROWS,
+	SERVICE_LIST_1,
+	SERVICE_LIST_2,
 };
