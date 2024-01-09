@@ -24,9 +24,25 @@
     flex-direction: column;
     gap: 16px;
 }
+
 .container__step2__btns{
     display: flex;
     gap: 16px;
+}
+
+.container__step2__checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.container__step2__checkbox {
+    display: flex;
+    width: 100%;
+    & > * {
+        flex: 1;
+    }
 }
 
 .container__step3__body{
