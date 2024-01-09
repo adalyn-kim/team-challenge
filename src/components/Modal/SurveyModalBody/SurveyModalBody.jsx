@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import cn from 'classnames';
 
 import {
@@ -18,9 +18,9 @@ import styles from './SurveyModalBody.module.scss';
 
 const SurveyModalBody = ({
 	formData,
-	setFormDataWithKey,
+	changeFormData,
 	currentStep,
-	setIsValid,
+	checkAllAgreements,
 }) => {
 	const CurrentInputGroup = SurveyModalBody[`Step${currentStep + 1}`];
 
@@ -28,18 +28,15 @@ const SurveyModalBody = ({
 		<div className={styles.ConfirmChallengerInfo__inputList}>
 			<CurrentInputGroup
 				formData={formData}
-				setFormDataWithKey={setFormDataWithKey}
-				setIsValid={setIsValid}
+				changeFormData={changeFormData}
+				checkAllAgreements={checkAllAgreements}
 			/>
 		</div>
 	);
 };
 
-SurveyModalBody.Step1 = ({ setIsValid }) => {
-	useEffect(() => {
-		setIsValid(true);
-	}, []);
-
+SurveyModalBody.Step1 = ({ formData, changeFormData, checkAllAgreements }) => {
+	console.log('formData >> ', formData);
 	return (
 		<Modal.Body>
 			<div className={cn(styles.container)}>
@@ -54,42 +51,102 @@ SurveyModalBody.Step1 = ({ setIsValid }) => {
 				<div className={cn(styles.container__body)}>
 					<Form.Group>
 						<Label required>이름</Label>
-						<Input placeholder="이름을 입력해주세요." />
+						<Input
+							placeholder="이름을 입력해주세요."
+							value={formData.name}
+							onChange={(e) => {
+								return changeFormData({ name: e.target.value });
+							}}
+						/>
 					</Form.Group>
 					<Form.Group>
 						<Label required type="tel">
 							전화번호
 						</Label>
-						<Input placeholder="ex. 01012345678" />
+						<Input
+							placeholder="ex. 01012345678"
+							value={formData.phone}
+							onChange={(e) => {
+								return changeFormData({
+									phone: e.target.value,
+								});
+							}}
+						/>
 					</Form.Group>
 					<Form.Group>
 						<Label required type="email">
 							이메일
 						</Label>
-						<Input placeholder="ex. goormee@goorm.io" />
+						<Input
+							placeholder="ex. goormee@goorm.io"
+							value={formData.email}
+							onChange={(e) => {
+								return changeFormData({
+									email: e.target.value,
+								});
+							}}
+						/>
 					</Form.Group>
 				</div>
 
 				<div className={cn(styles.container__footer)}>
 					<Form.Group>
-						<Input label="전체 동의" type="checkbox" />
+						<Input
+							label="전체 동의"
+							type="checkbox"
+							checked={
+								formData.agreements.personal &&
+								formData.agreements.marketing &&
+								formData.agreements.advertisement
+							}
+							onChange={(e) => {
+								return checkAllAgreements(e.target.checked);
+							}}
+						/>
 					</Form.Group>
 					<Form.Group>
 						<Input
 							label="(필수) 개인정보처리방침"
 							type="checkbox"
+							checked={formData.agreements.personal}
+							onChange={(e) => {
+								return changeFormData({
+									agreements: {
+										...formData.agreements,
+										personal: e.target.checked,
+									},
+								});
+							}}
 						/>
 					</Form.Group>
 					<Form.Group>
 						<Input
 							label="(선택) 마케팅 목적의 개인 정보 수집 및 이용"
 							type="checkbox"
+							checked={formData.agreements.marketing}
+							onChange={(e) => {
+								return changeFormData({
+									agreements: {
+										...formData.agreements,
+										marketing: e.target.checked,
+									},
+								});
+							}}
 						/>
 					</Form.Group>
 					<Form.Group>
 						<Input
 							label="(선택) 광고성 정보 수신"
 							type="checkbox"
+							checked={formData.agreements.advertisement}
+							onChange={(e) => {
+								return changeFormData({
+									agreements: {
+										...formData.agreements,
+										advertisement: e.target.checked,
+									},
+								});
+							}}
 						/>
 					</Form.Group>
 				</div>
@@ -98,10 +155,14 @@ SurveyModalBody.Step1 = ({ setIsValid }) => {
 	);
 };
 
-SurveyModalBody.Step2 = ({ setIsValid }) => {
-	useEffect(() => {
-		setIsValid(true);
-	}, []);
+SurveyModalBody.Step2 = () => {
+	const [isUsedGoorm, setIsUsedGoorm] = useState(null);
+
+	const toggleIsUsedGoorm = (e) => {
+		setIsUsedGoorm((usedGoorm) => {
+			return e.target.value === 'yes' ? 'yes' : 'no';
+		});
+	};
 
 	return (
 		<Modal.Body>
@@ -134,15 +195,111 @@ SurveyModalBody.Step2 = ({ setIsValid }) => {
 						</Label>
 						<Form.Group>
 							<div className={cn(styles.container__step2__btns)}>
-								<Button color="basic" size="lg" block>
+								<Button
+									value="yes"
+									color="basic"
+									size="lg"
+									block
+									active={isUsedGoorm === 'yes'}
+									onClick={(e) => {
+										return toggleIsUsedGoorm(e);
+									}}
+								>
 									예
 								</Button>
-								<Button color="basic" size="lg" block>
+								<Button
+									value="no"
+									color="basic"
+									size="lg"
+									block
+									active={isUsedGoorm === 'no'}
+									onClick={(e) => {
+										return toggleIsUsedGoorm(e);
+									}}
+								>
 									아니오
 								</Button>
 							</div>
 						</Form.Group>
 					</div>
+					{isUsedGoorm === 'yes' && (
+						<>
+							<div
+								className={cn(
+									styles.container__step2__body__ele,
+								)}
+							>
+								<Label>
+									2-1. 사용 경험이 있는 서비스를 선택해주세요.
+									(복수 선택 가능)
+								</Label>
+								<div
+									className={cn(
+										styles.container__step2__checkboxes,
+									)}
+								>
+									<div
+										className={cn(
+											styles.container__step2__checkbox,
+										)}
+									>
+										{CONSTANT.SERVICE_LIST_1.map(
+											(service) => {
+												return (
+													<Form.Group>
+														<Input
+															value={service}
+															label={`구름${service}`}
+															type="checkbox"
+															block
+														/>
+													</Form.Group>
+												);
+											},
+										)}
+									</div>
+
+									<div
+										className={cn(
+											styles.container__step2__checkbox,
+										)}
+									>
+										{CONSTANT.SERVICE_LIST_2.map(
+											(service) => {
+												if (!service)
+													return <div></div>;
+												return (
+													<Form.Group>
+														<Input
+															value={service}
+															label={`구름${service}`}
+															type="checkbox"
+															block
+														/>
+													</Form.Group>
+												);
+											},
+										)}
+									</div>
+								</div>
+							</div>
+							<div
+								className={cn(
+									styles.container__step2__body__ele,
+								)}
+							>
+								<Label>
+									2-2. 해당 서비스를 사용하게 된 이유는
+									무엇인가요?
+								</Label>
+								<TextArea
+									placeholder="ex. 구름톤 챌린지에 참여하기 위해 레벨 서비스를 사용해봤습니다."
+									resize="vertical"
+									rows={CONSTANT.TEXTAREA_ROWS}
+								/>
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 		</Modal.Body>
