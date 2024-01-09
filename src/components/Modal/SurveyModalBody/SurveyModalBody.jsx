@@ -115,36 +115,32 @@ SurveyModalBody.Step2 = ({ setIsValid }) => {
 					</Typography>
 				</div>
 				<div className={cn(styles.container__step2__body)}>
-					<div className={cn(styles.container__step2__body__first)}>
+					<div className={cn(styles.container__step2__body__ele)}>
 						<Label required>1. SW학과를 전공하셨나요?</Label>
-						<div
-							className={cn(styles.container__step2__first__btns)}
-						>
-							<Form.Group>
-								<Button color="basic" size="lg" block={false}>
+						<Form.Group>
+							<div className={cn(styles.container__step2__btns)}>
+								<Button color="basic" size="lg" block>
 									전공
 								</Button>
-							</Form.Group>
-							<Form.Group>
-								<Button color="basic" size="lg" block={false}>
+								<Button color="basic" size="lg" block>
 									비전공
 								</Button>
-							</Form.Group>
-						</div>
+							</div>
+						</Form.Group>
 					</div>
-					<div>
+					<div className={cn(styles.container__step2__body__ele)}>
 						<Label required>
 							2. 구름 서비스를 사용해본 적이 있나요?
 						</Label>
 						<Form.Group>
-							<Button color="basic" size="lg">
-								예
-							</Button>
-						</Form.Group>
-						<Form.Group>
-							<Button color="basic" size="lg">
-								아니오
-							</Button>
+							<div className={cn(styles.container__step2__btns)}>
+								<Button color="basic" size="lg" block>
+									예
+								</Button>
+								<Button color="basic" size="lg" block>
+									아니오
+								</Button>
+							</div>
 						</Form.Group>
 					</div>
 				</div>

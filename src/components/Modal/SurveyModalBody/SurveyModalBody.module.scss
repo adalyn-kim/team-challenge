@@ -19,10 +19,14 @@
     flex-direction: column;
     gap: 32px;
 }
-.container__step2__body__first{
+.container__step2__body__ele{
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
+}
+.container__step2__btns{
+    display: flex;
+    gap: 16px;
 }
 
 .container__step3__body{
