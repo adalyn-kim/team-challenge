@@ -8,10 +8,31 @@ import SurveyModalBody from '../SurveyModalBody';
 
 import styles from './SurveyModal.module.scss';
 
-const SurvayModal = ({ isOpen, handleToggle }) => {
+/** @typedef FormData
+ *  @property {string} name
+ *  @property {string} phone
+ *  @property {string} email
+ *  @property {{ personal: boolean; marketing: boolean; advertisement: boolean; }} agreements
+ *  @property {boolean} isMajor
+ *  @property {{ useGoorm: boolean; service: { EDU: boolean; LEVEL: boolean; DEVTH: boolean; IDE: boolean; EXP: boolean }; reason: string; }} goorm
+ *  @property {{ 1: boolean; 2: boolean; 3: boolean; 4: boolean;  }} expects
+ *  @property {string} review
+ */
+
+/**
+ *
+ * @param {{ isOpen: boolean; handleToggle: () => void; formData: FormData; changeFormData: (newFormData: Partial<FormData>) => void }} props
+ * @returns
+ */
+const SurvayModal = ({
+	isOpen,
+	handleToggle,
+	formData,
+	changeFormData,
+	checkAllAgreements,
+}) => {
 	const [currentStep, setCurrentStep] = useState(0);
 	const [isSubmit, setIsSubmit] = useState(false); // 제출여부 파악을 위한 state
-	const [isValid, setIsValid] = useState(false); // valid 필드 다 체크했는지를 위한 state
 
 	// 현재 step이 끝났다면 제출하기 버튼, 아니면 다음 버튼 그리기
 	const getNextButtonText = (isSubmitPageIndex) => {
@@ -32,8 +53,10 @@ const SurvayModal = ({ isOpen, handleToggle }) => {
 		<Modal isOpen={isOpen} toggle={handleToggle}>
 			<Modal.Header toggle={handleToggle} />
 			<SurveyModalBody
+				formData={formData}
+				changeFormData={changeFormData}
 				currentStep={currentStep}
-				setIsValid={setIsValid}
+				checkAllAgreements={checkAllAgreements}
 			/>
 			<Modal.Footer between>
 				<CarouselIndicators
@@ -60,7 +83,6 @@ const SurvayModal = ({ isOpen, handleToggle }) => {
 								moveToNextStep();
 							}
 						}}
-						disabled={!isValid}
 					>
 						{getNextButtonText(
 							currentStep === CONSTANTS.SUBMIT_INDEX,
