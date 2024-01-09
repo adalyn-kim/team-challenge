@@ -10,6 +10,8 @@ const LAST_INDEX = LAST_STEP - 1;
 
 const SUBMIT_INDEX = SUBMIT_STEP - 1;
 
+const TEXTAREA_ROWS = 4;
+
 export default {
 	FIRST_STEP,
 	LAST_STEP,
@@ -17,4 +19,5 @@ export default {
 	FIRST_INDEX,
 	LAST_INDEX,
 	SUBMIT_INDEX,
+	TEXTAREA_ROWS,
 };

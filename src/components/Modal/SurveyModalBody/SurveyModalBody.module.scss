@@ -14,6 +14,22 @@
     flex-direction: column;
     gap: 16px;
 }
+.container__step2__body {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+.container__step2__body__first{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.container__step3__body{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
 .container__footer {
     display: flex;

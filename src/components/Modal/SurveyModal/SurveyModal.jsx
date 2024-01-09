@@ -10,8 +10,8 @@ import styles from './SurveyModal.module.scss';
 
 const SurvayModal = ({ isOpen, handleToggle }) => {
 	const [currentStep, setCurrentStep] = useState(0);
-	const [isSubmit, setIsSubmit] = useState(false);
-	const [isValid, setIsValid] = useState(false);
+	const [isSubmit, setIsSubmit] = useState(false); // 제출여부 파악을 위한 state
+	const [isValid, setIsValid] = useState(false); // valid 필드 다 체크했는지를 위한 state
 
 	// 현재 step이 끝났다면 제출하기 버튼, 아니면 다음 버튼 그리기
 	const getNextButtonText = (isSubmitPageIndex) => {

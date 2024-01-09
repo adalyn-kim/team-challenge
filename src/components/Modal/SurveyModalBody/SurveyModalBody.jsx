@@ -114,25 +114,37 @@ SurveyModalBody.Step2 = ({ setIsValid }) => {
 						더 좋은 챌린지가 될 수 있도록 데이터를 수집하려고 해요.
 					</Typography>
 				</div>
-				<div className={cn(styles.container__body)}>
-					<div>
-						<Form.Group>
-							<Label required>1. SW학과를 전공하셨나요?</Label>
-							<div>
-								<Button color="basic">전공</Button>
-								<Button color="basic">비전공</Button>
-							</div>
-						</Form.Group>
+				<div className={cn(styles.container__step2__body)}>
+					<div className={cn(styles.container__step2__body__first)}>
+						<Label required>1. SW학과를 전공하셨나요?</Label>
+						<div
+							className={cn(styles.container__step2__first__btns)}
+						>
+							<Form.Group>
+								<Button color="basic" size="lg" block={false}>
+									전공
+								</Button>
+							</Form.Group>
+							<Form.Group>
+								<Button color="basic" size="lg" block={false}>
+									비전공
+								</Button>
+							</Form.Group>
+						</div>
 					</div>
 					<div>
+						<Label required>
+							2. 구름 서비스를 사용해본 적이 있나요?
+						</Label>
 						<Form.Group>
-							<Label required>
-								2. 구름 서비스를 사용해본 적이 있나요?
-							</Label>
-							<div>
-								<Button color="basic">예</Button>
-								<Button color="basic">아니오</Button>
-							</div>
+							<Button color="basic" size="lg">
+								예
+							</Button>
+						</Form.Group>
+						<Form.Group>
+							<Button color="basic" size="lg">
+								아니오
+							</Button>
 						</Form.Group>
 					</div>
 				</div>
@@ -153,27 +165,31 @@ SurveyModalBody.Step3 = () => {
 						더 좋은 챌린지가 될 수 있도록 데이터를 수집하려고 해요.
 					</Typography>
 				</div>
-				<div className={cn(styles.container__body)}>
-					<div>
-						<Form.Group>
-							<Label required>1. SW학과를 전공하셨나요?</Label>
-							<div>
-								<Button color="basic">전공</Button>
-								<Button color="basic">비전공</Button>
-							</div>
-						</Form.Group>
-					</div>
-					<div>
-						<Form.Group>
-							<Label required>
-								2. 구름 서비스를 사용해본 적이 있나요?
-							</Label>
-							<div>
-								<Button color="basic">예</Button>
-								<Button color="basic">아니오</Button>
-							</div>
-						</Form.Group>
-					</div>
+				<div className={cn(styles.container__step3__body)}>
+					<Form.Group>
+						<Button color="basic" size="lg" block content="start">
+							1. (예시) 정해진 시간 내에 오프라인 팀 챌린지 과제를
+							수행
+						</Button>
+					</Form.Group>
+					<Form.Group>
+						<Button color="basic" size="lg" block content="start">
+							2. (예시) 정해진 시간 내에 오프라인 팀 챌린지 과제를
+							수행
+						</Button>
+					</Form.Group>
+					<Form.Group>
+						<Button color="basic" size="lg" block content="start">
+							3. (예시) 정해진 시간 내에 오프라인 팀 챌린지 과제를
+							수행
+						</Button>
+					</Form.Group>
+					<Form.Group>
+						<Button color="basic" size="lg" block content="start">
+							4. (예시) 정해진 시간 내에 오프라인 팀 챌린지 과제를
+							수행
+						</Button>
+					</Form.Group>
 				</div>
 			</div>
 		</Modal.Body>
@@ -194,11 +210,9 @@ SurveyModalBody.Step4 = () => {
 				</div>
 				<div className={cn(styles.container__body)}>
 					<TextArea
-						placeholder="ex.
-							다음 번 챌린지에서는 더 어려운 문제가 출제되면 좋겠어요.
-							오프라인 과제가 다양했으면 좋겠어요.
-							"
+						placeholder="ex.&#10;다음 번 챌린지에서는 더 어려운 문제가 출제되면 좋겠어요.&#10;오프라인 과제가 다양했으면 좋겠어요."
 						resize="vertical"
+						rows={CONSTANT.TEXTAREA_ROWS}
 					/>
 				</div>
 			</div>
