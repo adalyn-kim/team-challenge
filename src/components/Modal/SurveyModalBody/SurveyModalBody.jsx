@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
 import cn from 'classnames';
 
 import {
 	Button,
-	CarouselIndicators,
 	Form,
 	Input,
 	Label,
@@ -156,14 +154,6 @@ SurveyModalBody.Step1 = ({ formData, changeFormData, checkAllAgreements }) => {
 };
 
 SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
-	const [isUsedGoorm, setIsUsedGoorm] = useState(undefined);
-
-	const toggleIsUsedGoorm = () => {
-		setIsUsedGoorm((usedGoorm) => {
-			return !usedGoorm;
-		});
-	};
-
 	return (
 		<Modal.Body>
 			<div className={cn(styles.container)}>
