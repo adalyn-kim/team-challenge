@@ -408,7 +408,7 @@ SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
 	);
 };
 
-SurveyModalBody.Step3 = () => {
+SurveyModalBody.Step3 = ({ formData, changeFormData }) => {
 	return (
 		<Modal.Body>
 			<div className={cn(styles.container)}>
@@ -421,37 +421,38 @@ SurveyModalBody.Step3 = () => {
 					</Typography>
 				</div>
 				<div className={cn(styles.container__step3__body)}>
-					<Form.Group>
-						<Button color="basic" size="lg" block content="start">
-							1. (예시) 정해진 시간 내에 오프라인 팀 챌린지 과제를
-							수행
-						</Button>
-					</Form.Group>
-					<Form.Group>
-						<Button color="basic" size="lg" block content="start">
-							2. (예시) 정해진 시간 내에 오프라인 팀 챌린지 과제를
-							수행
-						</Button>
-					</Form.Group>
-					<Form.Group>
-						<Button color="basic" size="lg" block content="start">
-							3. (예시) 정해진 시간 내에 오프라인 팀 챌린지 과제를
-							수행
-						</Button>
-					</Form.Group>
-					<Form.Group>
-						<Button color="basic" size="lg" block content="start">
-							4. (예시) 정해진 시간 내에 오프라인 팀 챌린지 과제를
-							수행
-						</Button>
-					</Form.Group>
+					{CONSTANT.EXPECT_LIST.map((expect) => {
+						return (
+							<Form.Group>
+								<Button
+									color="basic"
+									size="lg"
+									block
+									content="start"
+									value={formData.expects[expect]}
+									active={formData.expects[expect]}
+									onClick={() => {
+										return changeFormData({
+											expects: {
+												...formData.expects,
+												[expect]:
+													!formData.expects[expect],
+											},
+										});
+									}}
+								>
+									{expect}
+								</Button>
+							</Form.Group>
+						);
+					})}
 				</div>
 			</div>
 		</Modal.Body>
 	);
 };
 
-SurveyModalBody.Step4 = () => {
+SurveyModalBody.Step4 = ({ formData, changeFormData }) => {
 	return (
 		<Modal.Body>
 			<div className={cn(styles.container)}>
@@ -468,6 +469,11 @@ SurveyModalBody.Step4 = () => {
 						placeholder="ex.&#10;다음 번 챌린지에서는 더 어려운 문제가 출제되면 좋겠어요.&#10;오프라인 과제가 다양했으면 좋겠어요."
 						resize="vertical"
 						rows={CONSTANT.TEXTAREA_ROWS}
+						onChange={(e) => {
+							return changeFormData({
+								review: e.target.value,
+							});
+						}}
 					/>
 				</div>
 			</div>
