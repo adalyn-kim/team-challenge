@@ -390,6 +390,7 @@ SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
 									placeholder="ex. 구름톤 챌린지에 참여하기 위해 레벨 서비스를 사용해봤습니다."
 									resize="vertical"
 									rows={CONSTANT.TEXTAREA_ROWS}
+									value={formData.goorm.reason}
 									onChange={(e) => {
 										return changeFormData({
 											goorm: {
@@ -469,6 +470,7 @@ SurveyModalBody.Step4 = ({ formData, changeFormData }) => {
 						placeholder="ex.&#10;다음 번 챌린지에서는 더 어려운 문제가 출제되면 좋겠어요.&#10;오프라인 과제가 다양했으면 좋겠어요."
 						resize="vertical"
 						rows={CONSTANT.TEXTAREA_ROWS}
+						value={formData.review}
 						onChange={(e) => {
 							return changeFormData({
 								review: e.target.value,
