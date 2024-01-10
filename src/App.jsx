@@ -46,29 +46,19 @@ function App() {
 
 	/**
 	 * Modal에서 전체동의에 대한 체크박스를 관리하는 함수
-	 * @param {Object} checkAllOptions
+	 * @param {Object} checkAll
 	 */
-	const checkAllAgreements = (checkAllOptions) => {
-		// 전체 동의 true면 formData의 agreements true로, false면 전체 해제
-		if (checkAllOptions) {
-			setFormData({
-				...formData,
-				agreements: {
-					personal: true,
-					marketing: true,
-					advertisement: true,
-				},
-			});
-		} else {
-			setFormData({
-				...formData,
-				agreements: {
-					personal: false,
-					marketing: false,
-					advertisement: false,
-				},
-			});
-		}
+	const checkAllAgreements = (checkAll) => {
+		const allAgreements = {
+			personal: checkAll,
+			marketing: checkAll,
+			advertisement: checkAll,
+		};
+
+		setFormData({
+			...formData,
+			agreements: { ...allAgreements },
+		});
 	};
 
 	// 모달의 toggle 'X' button 제어하는 함수
