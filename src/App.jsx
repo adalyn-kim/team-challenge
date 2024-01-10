@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Card, EmptyView, Header, SurveyModal } from '@/components';
+import { EmptyView, Header, SurveyModal } from '@/components';
 
 import styles from './App.module.scss';
 
@@ -36,10 +36,18 @@ function App() {
 	});
 	const [isOpen, setIsOpen] = useState(false);
 
+	/**
+	 * Modal 내 formData들의 event를 감지하여 formData를 업데이트 시켜주는 함수
+	 * @param {Object} newFormData
+	 */
 	const changeFormData = (newFormData) => {
 		setFormData({ ...formData, ...newFormData });
 	};
 
+	/**
+	 * Modal에서 전체동의에 대한 체크박스를 관리하는 함수
+	 * @param {Object} checkAllOptions
+	 */
 	const checkAllAgreements = (checkAllOptions) => {
 		// 전체 동의 true면 formData의 agreements true로, false면 전체 해제
 		if (checkAllOptions) {
