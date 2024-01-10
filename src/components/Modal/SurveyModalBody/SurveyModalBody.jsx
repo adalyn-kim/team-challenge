@@ -280,10 +280,41 @@ SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
 												return (
 													<Form.Group>
 														<Input
-															value={service}
+															key={service}
+															value={
+																formData.goorm
+																	.service[
+																	service
+																]
+															}
 															label={`구름${service}`}
 															type="checkbox"
 															block
+															checked={
+																formData.goorm
+																	.service[
+																	service
+																]
+															}
+															onChange={(e) => {
+																return changeFormData(
+																	{
+																		goorm: {
+																			...formData.goorm,
+																			service:
+																				{
+																					...formData
+																						.goorm
+																						.service,
+																					[service]:
+																						e
+																							.target
+																							.checked,
+																				},
+																		},
+																	},
+																);
+															}}
 														/>
 													</Form.Group>
 												);
@@ -303,10 +334,41 @@ SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
 												return (
 													<Form.Group>
 														<Input
-															value={service}
+															key={service}
+															value={
+																formData.goorm
+																	.service[
+																	service
+																]
+															}
 															label={`구름${service}`}
 															type="checkbox"
 															block
+															checked={
+																formData.goorm
+																	.service[
+																	service
+																]
+															}
+															onChange={(e) => {
+																return changeFormData(
+																	{
+																		goorm: {
+																			...formData.goorm,
+																			service:
+																				{
+																					...formData
+																						.goorm
+																						.service,
+																					[service]:
+																						e
+																							.target
+																							.checked,
+																				},
+																		},
+																	},
+																);
+															}}
 														/>
 													</Form.Group>
 												);
@@ -328,6 +390,14 @@ SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
 									placeholder="ex. 구름톤 챌린지에 참여하기 위해 레벨 서비스를 사용해봤습니다."
 									resize="vertical"
 									rows={CONSTANT.TEXTAREA_ROWS}
+									onChange={(e) => {
+										return changeFormData({
+											goorm: {
+												...formData.goorm,
+												reason: e.target.value,
+											},
+										});
+									}}
 								/>
 							</div>
 						</>
