@@ -30,6 +30,7 @@ const SurvayModal = ({
 	formData,
 	changeFormData,
 	checkAllAgreements,
+	submitSurveyFormData,
 }) => {
 	const [currentStep, setCurrentStep] = useState(0);
 	const [isSubmit, setIsSubmit] = useState(false); // 제출여부 파악을 위한 state
@@ -78,7 +79,7 @@ const SurvayModal = ({
 						size="lg"
 						onClick={() => {
 							if (currentStep === CONSTANTS.SUBMIT_INDEX) {
-								// submitSurveyModal();
+								submitSurveyFormData();
 							} else {
 								moveToNextStep();
 							}
