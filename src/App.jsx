@@ -40,6 +40,7 @@ function App() {
 		isLoading: false,
 		data: [],
 	}); // 설문조사 참여자 리스트 저장을 위한 상태
+	const [flagForFetch, setFlagForFetch] = useState(false); // 제출 후 result view 리렌더링을 위한 상태
 	console.log(participantsInfo);
 
 	/**
@@ -53,7 +54,6 @@ function App() {
 				data: participantsInfo.data,
 			});
 			const response = await getParticipantsList();
-			// console.log('response >>> >', response);
 
 			setParticipantsInfo({
 				isLoading: false,
@@ -78,7 +78,7 @@ function App() {
 	 */
 	useEffect(() => {
 		getAllParticipantsInfo();
-	}, []);
+	}, [flagForFetch]);
 
 	/**
 	 * Modal 내 formData들의 event를 감지하여 formData를 업데이트 시켜주는 함수
@@ -127,9 +127,9 @@ function App() {
 				marketing: false,
 				advertisement: false,
 			},
-			isMajor: false,
+			isMajor: undefined,
 			goorm: {
-				useGoorm: false,
+				useGoorm: undefined,
 				service: {
 					EDU: false,
 					LEVEL: false,
@@ -157,6 +157,10 @@ function App() {
 		try {
 			const result = await createParticipant({ surveyInfo: formData });
 			if (result) {
+				// 확인하기 편하게 이렇게 하는게 좋은지 함수로 빼는게 좋은지
+				setFlagForFetch((submit) => {
+					return !submit;
+				});
 				handleToggle(); // 제출 성공이면 모달 닫기
 				setFormData(resetFormData()); // 모달의 form data 초기화
 			}
