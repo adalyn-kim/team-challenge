@@ -49,6 +49,13 @@ function App() {
 	 * 전체 참가자 정보를 가져오는 함수
 	 */
 	const getAllParticipantsInfo = async () => {
+		
+		// 데이터 호출 중인데 또 스크롤 했을 때 중복 호출 막는 기능
+		if (participantsInfo.isLoading) {
+			console.log('prevent fetching');
+			return;
+		}
+
 		try {
 			setParticipantsInfo({
 				isLoading: true,
@@ -60,8 +67,8 @@ function App() {
 			setParticipantsInfo({
 				isLoading: false,
 				isError: false,
-				// data: [...participantsInfo.data, ...response.data], // 무한스크롤 시
-				data: response.data,
+				data: [...participantsInfo.data, ...response.data], // 무한스크롤 시
+				// data: response.data,
 				error: null,
 			});
 		} catch (error) {
