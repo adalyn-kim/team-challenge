@@ -32,12 +32,9 @@ export async function getParticipantInfo({ id }) {
  * @returns
  */
 export async function createParticipant({ surveyInfo }) {
-	console.log('surveyInfo >>>', surveyInfo);
 	try {
 		const data = await axios.post(`${HOST_NAME}/api/applicant`, surveyInfo);
-		localStorage.setItem('surveyInfo', JSON.stringify(surveyInfo));
 		alert('설문조사 제출에 성공 했습니다');
-		console.log('data ', data);
 		return data;
 	} catch (error) {
 		alert('설문조사 저장에 실패했습니다.');
