@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { EmptyView, Header, ResultView, SurveyModal } from '@/components';
 
@@ -6,6 +6,8 @@ import styles from './App.module.scss';
 import { createParticipant, getParticipantsList } from './api/apis';
 
 function App() {
+	const outerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
+	const innerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
 	const [formData, setFormData] = useState({
 		name: '',
 		phone: '',
@@ -58,6 +60,7 @@ function App() {
 			setParticipantsInfo({
 				isLoading: false,
 				isError: false,
+				// data: [...participantsInfo.data, ...response.data], // 무한스크롤 시
 				data: response.data,
 				error: null,
 			});
@@ -173,23 +176,38 @@ function App() {
 	return (
 		<div className={styles.App}>
 			<Header setIsOpen={setIsOpen} />
-			<main className={styles.main}>
-				{participantsInfo.data.length ? (
-					<ResultView participantsInfo={participantsInfo} />
-				) : (
-					<EmptyView />
-				)}
-				{isOpen && (
-					<SurveyModal
-						isOpen={isOpen}
-						handleToggle={handleToggle}
-						formData={formData}
-						changeFormData={changeFormData}
-						checkAllAgreements={checkAllAgreements}
-						submitSurveyFormData={submitSurveyFormData}
-					/>
-				)}
-			</main>
+			<div
+				className={styles.outer}
+				ref={outerRef}
+				onScroll={() => {
+					if (
+						outerRef.current.scrollTop +
+							outerRef.current.clientHeight >
+						innerRef.current.clientHeight
+					) {
+						console.log('scroll');
+						getAllParticipantsInfo();
+					}
+				}}
+			>
+				<main className={styles.main} ref={innerRef}>
+					{participantsInfo.data.length ? (
+						<ResultView participantsInfo={participantsInfo} />
+					) : (
+						<EmptyView />
+					)}
+					{isOpen && (
+						<SurveyModal
+							isOpen={isOpen}
+							handleToggle={handleToggle}
+							formData={formData}
+							changeFormData={changeFormData}
+							checkAllAgreements={checkAllAgreements}
+							submitSurveyFormData={submitSurveyFormData}
+						/>
+					)}
+				</main>
+			</div>
 		</div>
 	);
 }
