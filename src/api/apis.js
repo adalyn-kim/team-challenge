@@ -7,19 +7,21 @@ const HOST_NAME = 'https://devel-basic-test-api.run.goorm.io';
  * @returns
  */
 export async function getParticipantsList() {
-	const { data } = await axios.get('/api/applicant');
-
-	return data;
+	try {
+		const { data } = await axios.get(`${HOST_NAME}/api/applicant`);
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 /**
  * 특정 지원자 정보 조회
- * @param {Object} participantInfo
+ * @param {string} id
  * @returns
  */
-export async function getParticipantInfo({ participantInfo }) {
-	const { name, phone, email } = { participantInfo };
-	const { data } = await axios.get('/api/applicant', name, phone, email);
+export async function getParticipantInfo({ id }) {
+	const { data } = await axios.get('/api/applicant', id);
 
 	return data;
 }
