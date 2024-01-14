@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import cn from 'classnames';
 
 import { Button, CarouselIndicators, Modal } from '@goorm-dev/gds-challenge';
@@ -49,6 +49,14 @@ const SurvayModal = ({
 	const moveToNextStep = () => {
 		setCurrentStep(currentStep + 1);
 	};
+
+	useEffect(() => {
+		const activeStep = parseInt(
+			localStorage.getItem('activeStep') || '0',
+			10,
+		);
+		setCurrentStep(activeStep);
+	}, []);
 
 	return (
 		<Modal isOpen={isOpen} toggle={handleToggle}>
