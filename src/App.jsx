@@ -49,8 +49,7 @@ function App() {
 	 * 전체 참가자 정보를 가져오는 함수
 	 */
 	const getAllParticipantsInfo = async () => {
-		
-		// 데이터 호출 중인데 또 스크롤 했을 때 중복 호출 막는 기능
+		// 데이터 호출 중인데 또 스크롤 했을 때 중복 호출 막는 기능, throttle
 		if (participantsInfo.isLoading) {
 			console.log('prevent fetching');
 			return;
