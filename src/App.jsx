@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { EmptyView, Header, SurveyModal } from '@/components';
+import { EmptyView, Header, ResultView, SurveyModal } from '@/components';
 
 import styles from './App.module.scss';
-import { createParticipant } from './api/apis';
+import { createParticipant, getParticipantsList } from './api/apis';
 
 function App() {
 	const [formData, setFormData] = useState({
@@ -15,9 +15,9 @@ function App() {
 			marketing: false,
 			advertisement: false,
 		},
-		isMajor: false,
+		isMajor: undefined,
 		goorm: {
-			useGoorm: false,
+			useGoorm: undefined,
 			service: {
 				EDU: false,
 				LEVEL: false,
@@ -34,8 +34,51 @@ function App() {
 			4: false,
 		},
 		review: '',
-	});
-	const [isOpen, setIsOpen] = useState(false);
+	}); // 설문조사 데이터 저장을 위한 formData 상태
+	const [isOpen, setIsOpen] = useState(false); // modal 열고닫기를 위한 상태
+	const [participantsInfo, setParticipantsInfo] = useState({
+		isLoading: false,
+		data: [],
+	}); // 설문조사 참여자 리스트 저장을 위한 상태
+	console.log(participantsInfo);
+
+	/**
+	 * 전체 참가자 정보를 가져오는 함수
+	 */
+	const getAllParticipantsInfo = async () => {
+		try {
+			setParticipantsInfo({
+				isLoading: true,
+				isError: false,
+				data: participantsInfo.data,
+			});
+			const response = await getParticipantsList();
+			// console.log('response >>> >', response);
+
+			setParticipantsInfo({
+				isLoading: false,
+				isError: false,
+				data: response.data,
+				error: null,
+			});
+		} catch (error) {
+			setParticipantsInfo({
+				isLoading: false,
+				isError: true,
+				data: [],
+				error,
+			});
+			console.log({ error });
+		}
+	};
+	console.log(participantsInfo);
+
+	/**
+	 * 화면이 redering 될 때 전체 참가자 정보를 가져오는 useEffect
+	 */
+	useEffect(() => {
+		getAllParticipantsInfo();
+	}, []);
 
 	/**
 	 * Modal 내 formData들의 event를 감지하여 formData를 업데이트 시켜주는 함수
@@ -127,7 +170,11 @@ function App() {
 		<div className={styles.App}>
 			<Header setIsOpen={setIsOpen} />
 			<main className={styles.main}>
-				<EmptyView />
+				{participantsInfo.data.length ? (
+					<ResultView participantsInfo={participantsInfo} />
+				) : (
+					<EmptyView />
+				)}
 				{isOpen && (
 					<SurveyModal
 						isOpen={isOpen}
