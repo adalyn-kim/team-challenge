@@ -5,10 +5,12 @@ import { EmptyView, Header, ResultView, SurveyModal } from '@/components';
 import styles from './App.module.scss';
 import { createParticipant, getParticipantsList } from './api/apis';
 
-function App() {
-	const outerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
-	const innerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
-	const [formData, setFormData] = useState({
+/**
+ * modal의 formData를 초기화 시켜주는 함수
+ * @returns
+ */
+const resetFormData = () => {
+	return {
 		name: '',
 		phone: '',
 		email: '',
@@ -36,7 +38,42 @@ function App() {
 			4: false,
 		},
 		review: '',
-	}); // 설문조사 데이터 저장을 위한 formData 상태
+	};
+};
+
+function App() {
+	const outerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
+	const innerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
+	// const [formData, setFormData] = useState({
+	// 	name: '',
+	// 	phone: '',
+	// 	email: '',
+	// 	agreements: {
+	// 		personal: false,
+	// 		marketing: false,
+	// 		advertisement: false,
+	// 	},
+	// 	isMajor: undefined,
+	// 	goorm: {
+	// 		useGoorm: undefined,
+	// 		service: {
+	// 			EDU: false,
+	// 			LEVEL: false,
+	// 			DEVTH: false,
+	// 			IDE: false,
+	// 			EXP: false,
+	// 		},
+	// 		reason: '',
+	// 	},
+	// 	expects: {
+	// 		1: false,
+	// 		2: false,
+	// 		3: false,
+	// 		4: false,
+	// 	},
+	// 	review: '',
+	// }); // 설문조사 데이터 저장을 위한 formData 상태
+	const [formData, setFormData] = useState(null);
 	const [isOpen, setIsOpen] = useState(false); // modal 열고닫기를 위한 상태
 	const [participantsInfo, setParticipantsInfo] = useState({
 		isLoading: false,
@@ -89,12 +126,29 @@ function App() {
 		getAllParticipantsInfo();
 	}, [flagForFetch]);
 
+	useEffect(() => {
+		const activeStep = parseInt(
+			localStorage.getItem('activeStep') || '0',
+			10,
+		);
+		setFormData(
+			JSON.parse(localStorage.getItem('formData' || resetFormData)),
+		);
+		if (activeStep >= 0) {
+			setIsOpen(true);
+		}
+	}, []);
+
 	/**
 	 * Modal 내 formData들의 event를 감지하여 formData를 업데이트 시켜주는 함수
 	 * @param {Object} newFormData
 	 */
 	const changeFormData = (newFormData) => {
 		setFormData({ ...formData, ...newFormData });
+		localStorage.setItem(
+			'formData',
+			JSON.stringify({ ...formData, ...newFormData }),
+		);
 	};
 
 	/**
@@ -123,42 +177,6 @@ function App() {
 	};
 
 	/**
-	 * modal의 formData를 초기화 시켜주는 함수
-	 * @returns
-	 */
-	const resetFormData = () => {
-		return {
-			name: '',
-			phone: '',
-			email: '',
-			agreements: {
-				personal: false,
-				marketing: false,
-				advertisement: false,
-			},
-			isMajor: undefined,
-			goorm: {
-				useGoorm: undefined,
-				service: {
-					EDU: false,
-					LEVEL: false,
-					DEVTH: false,
-					IDE: false,
-					EXP: false,
-				},
-				reason: '',
-			},
-			expects: {
-				1: false,
-				2: false,
-				3: false,
-				4: false,
-			},
-			review: '',
-		};
-	};
-
-	/**
 	 *
 	 * @returns result
 	 */
@@ -172,6 +190,7 @@ function App() {
 				});
 				handleToggle(); // 제출 성공이면 모달 닫기
 				setFormData(resetFormData()); // 모달의 form data 초기화
+				localStorage.clear();
 			}
 			return result;
 		} catch (error) {
@@ -191,7 +210,6 @@ function App() {
 							outerRef.current.clientHeight >
 						innerRef.current.clientHeight
 					) {
-						console.log('scroll');
 						getAllParticipantsInfo();
 					}
 				}}
