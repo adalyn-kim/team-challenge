@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import cn from 'classnames';
 
 import {
@@ -21,9 +22,10 @@ const SurveyModalBody = ({
 	checkAllAgreements,
 }) => {
 	const CurrentInputGroup = SurveyModalBody[`Step${currentStep + 1}`];
-
+	// reload 시
+	localStorage.setItem('activeStep', currentStep);
 	return (
-		<div className={styles.ConfirmChallengerInfo__inputList}>
+		<div>
 			<CurrentInputGroup
 				formData={formData}
 				changeFormData={changeFormData}
