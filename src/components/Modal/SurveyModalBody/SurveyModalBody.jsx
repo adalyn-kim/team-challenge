@@ -34,7 +34,6 @@ const SurveyModalBody = ({
 };
 
 SurveyModalBody.Step1 = ({ formData, changeFormData, checkAllAgreements }) => {
-	console.log('formData >> ', formData);
 	return (
 		<Modal.Body>
 			<div className={cn(styles.container)}>
@@ -174,8 +173,8 @@ SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
 									color="basic"
 									size="lg"
 									block
-									value={formData.isMajor}
-									active={formData.isMajor}
+									value
+									active={formData.isMajor === true}
 									onClick={() => {
 										return changeFormData({
 											isMajor: true,
@@ -188,8 +187,8 @@ SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
 									color="basic"
 									size="lg"
 									block
-									value={!formData.isMajor}
-									active={!formData.isMajor}
+									value={false}
+									active={formData.isMajor === false}
 									onClick={() => {
 										return changeFormData({
 											isMajor: false,
@@ -211,8 +210,8 @@ SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
 									color="basic"
 									size="lg"
 									block
-									value={formData.goorm.useGoorm}
-									active={formData.goorm.useGoorm}
+									value
+									active={formData.goorm.useGoorm === true}
 									onClick={() => {
 										return changeFormData({
 											goorm: {
@@ -228,8 +227,8 @@ SurveyModalBody.Step2 = ({ formData, changeFormData }) => {
 									color="basic"
 									size="lg"
 									block
-									value={!formData.goorm.useGoorm}
-									active={!formData.goorm.useGoorm}
+									value={false}
+									active={formData.goorm.useGoorm === false}
 									onClick={() => {
 										return changeFormData({
 											goorm: {
