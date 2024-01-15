@@ -5,42 +5,6 @@ import { EmptyView, Header, ResultView, SurveyModal } from '@/components';
 import styles from './App.module.scss';
 import { createParticipant, getParticipantsList } from './api/apis';
 
-/**
- * modal의 formData를 초기화 시켜주는 함수
- * @returns
- */
-const resetFormData = () => {
-	return {
-		name: '',
-		phone: '',
-		email: '',
-		agreements: {
-			personal: false,
-			marketing: false,
-			advertisement: false,
-		},
-		isMajor: undefined,
-		goorm: {
-			useGoorm: undefined,
-			service: {
-				EDU: false,
-				LEVEL: false,
-				DEVTH: false,
-				IDE: false,
-				EXP: false,
-			},
-			reason: '',
-		},
-		expects: {
-			1: false,
-			2: false,
-			3: false,
-			4: false,
-		},
-		review: '',
-	};
-};
-
 function App() {
 	const outerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
 	const innerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
@@ -78,7 +42,6 @@ function App() {
 		isLoading: false,
 		data: [],
 	}); // 설문조사 참여자 리스트 저장을 위한 상태
-	const [flagForFetch, setFlagForFetch] = useState(false); // 제출 후 result view 리렌더링을 위한 상태
 
 	/**
 	 * 전체 참가자 정보를 가져오는 함수
@@ -116,28 +79,70 @@ function App() {
 	};
 
 	/**
-	 * 화면이 redering 될 때 전체 참가자 정보를 가져오는 useEffect
+	 * localStorage에 formData값이 있으면 거기서 가져와서 state formData 세팅
+	 * 제출 전 reload 시 state의 휘발성을 고려하여 local storage에 중복 저장시킴
+	 * 그리고 전체 참가자 정보를 가져오는 useEffect
+	 *
 	 */
 	useEffect(() => {
 		getAllParticipantsInfo();
-	}, [flagForFetch]);
 
-	useEffect(() => {
-		const activeStep = parseInt(
-			localStorage.getItem('activeStep') || '0',
-			10,
-		);
 		const storedFormData = JSON.parse(localStorage.getItem('formData'));
 
-		if (storedFormData) {
-			setFormData(storedFormData);
-		} else {
-			setFormData(resetFormData);
-		}
+		const initialFormData = {
+			name: '',
+			phone: '',
+			email: '',
+			review: '',
+			isMajor: undefined,
+			agreements: {
+				personal: false,
+				marketing: false,
+				advertisement: false,
+			},
+			goorm: {
+				useGoorm: undefined,
+				service: {
+					EDU: false,
+					LEVEL: false,
+					DEVTH: false,
+					IDE: false,
+					EXP: false,
+				},
+				reason: '',
+			},
+			expects: {
+				1: false,
+				2: false,
+				3: false,
+				4: false,
+			},
+		};
 
-		// if (activeStep >= 0) {
-		// 	setIsOpen(true);
-		// }
+		if (storedFormData) {
+			setFormData({
+				...initialFormData,
+				...storedFormData,
+				agreements: {
+					...initialFormData.agreements,
+					...storedFormData?.agreements,
+				},
+				goorm: {
+					...initialFormData.goorm,
+					...storedFormData?.goorm,
+					service: {
+						...initialFormData.goorm.service,
+						...storedFormData?.goorm?.service,
+					},
+				},
+				expects: {
+					...initialFormData.expects,
+					...storedFormData?.expects,
+				},
+			});
+		} else {
+			setFormData(initialFormData);
+		}
 	}, []);
 
 	/**
@@ -161,19 +166,44 @@ function App() {
 	};
 
 	/**
-	 *
+	 * 제출하기 버튼 눌렀을 때 동작하는 함수
 	 * @returns result
 	 */
 	const submitSurveyFormData = async () => {
 		try {
 			const result = await createParticipant({ surveyInfo: formData });
 			if (result) {
-				// 확인하기 편하게 이렇게 하는게 좋은지 함수로 빼는게 좋은지
-				setFlagForFetch((submit) => {
-					return !submit;
-				});
+				getAllParticipantsInfo(); // 리렌더링을 위해 재호출
 				handleToggle(); // 제출 성공이면 모달 닫기
-				setFormData(resetFormData()); // 모달의 form data 초기화
+				setFormData({
+					name: '',
+					phone: '',
+					email: '',
+					review: '',
+					isMajor: undefined,
+					agreements: {
+						personal: false,
+						marketing: false,
+						advertisement: false,
+					},
+					goorm: {
+						useGoorm: undefined,
+						service: {
+							EDU: false,
+							LEVEL: false,
+							DEVTH: false,
+							IDE: false,
+							EXP: false,
+						},
+						reason: '',
+					},
+					expects: {
+						1: false,
+						2: false,
+						3: false,
+						4: false,
+					},
+				}); // 모달의 form data 초기화
 				localStorage.clear(); // 로컬스토리지 초기화
 			}
 			return result;
