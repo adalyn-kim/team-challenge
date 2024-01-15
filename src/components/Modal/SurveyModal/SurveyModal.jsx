@@ -29,7 +29,6 @@ const SurvayModal = ({
 	handleToggle,
 	formData,
 	changeFormData,
-	checkAllAgreements,
 	submitSurveyFormData,
 }) => {
 	const [currentStep, setCurrentStep] = useState(0);
@@ -65,7 +64,6 @@ const SurvayModal = ({
 				formData={formData}
 				changeFormData={changeFormData}
 				currentStep={currentStep}
-				checkAllAgreements={checkAllAgreements}
 			/>
 			<Modal.Footer between>
 				<CarouselIndicators
