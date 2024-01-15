@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import cn from 'classnames';
 
 import {
@@ -15,12 +14,7 @@ import CONSTANT from '../constants';
 
 import styles from './SurveyModalBody.module.scss';
 
-const SurveyModalBody = ({
-	formData,
-	changeFormData,
-	currentStep,
-	checkAllAgreements,
-}) => {
+const SurveyModalBody = ({ formData, changeFormData, currentStep }) => {
 	const CurrentInputGroup = SurveyModalBody[`Step${currentStep + 1}`];
 	// reload 시
 	localStorage.setItem('activeStep', currentStep);
@@ -29,13 +23,12 @@ const SurveyModalBody = ({
 			<CurrentInputGroup
 				formData={formData}
 				changeFormData={changeFormData}
-				checkAllAgreements={checkAllAgreements}
 			/>
 		</div>
 	);
 };
 
-SurveyModalBody.Step1 = ({ formData, changeFormData, checkAllAgreements }) => {
+SurveyModalBody.Step1 = ({ formData, changeFormData }) => {
 	return (
 		<Modal.Body>
 			<div className={cn(styles.container)}>
@@ -99,7 +92,13 @@ SurveyModalBody.Step1 = ({ formData, changeFormData, checkAllAgreements }) => {
 								formData.agreements.advertisement
 							}
 							onChange={(e) => {
-								return checkAllAgreements(e.target.checked);
+								return changeFormData({
+									agreements: {
+										advertisement: e.target.checked,
+										marketing: e.target.checked,
+										personal: e.target.checked,
+									},
+								});
 							}}
 						/>
 					</Form.Group>
