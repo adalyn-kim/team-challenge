@@ -44,43 +44,41 @@ const resetFormData = () => {
 function App() {
 	const outerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
 	const innerRef = useRef(null); // 무한 스크롤 구현을 위한 ref
-	// const [formData, setFormData] = useState({
-	// 	name: '',
-	// 	phone: '',
-	// 	email: '',
-	// 	agreements: {
-	// 		personal: false,
-	// 		marketing: false,
-	// 		advertisement: false,
-	// 	},
-	// 	isMajor: undefined,
-	// 	goorm: {
-	// 		useGoorm: undefined,
-	// 		service: {
-	// 			EDU: false,
-	// 			LEVEL: false,
-	// 			DEVTH: false,
-	// 			IDE: false,
-	// 			EXP: false,
-	// 		},
-	// 		reason: '',
-	// 	},
-	// 	expects: {
-	// 		1: false,
-	// 		2: false,
-	// 		3: false,
-	// 		4: false,
-	// 	},
-	// 	review: '',
-	// }); // 설문조사 데이터 저장을 위한 formData 상태
-	const [formData, setFormData] = useState(null);
+	const [formData, setFormData] = useState({
+		name: '',
+		phone: '',
+		email: '',
+		agreements: {
+			personal: false,
+			marketing: false,
+			advertisement: false,
+		},
+		isMajor: undefined,
+		goorm: {
+			useGoorm: undefined,
+			service: {
+				EDU: false,
+				LEVEL: false,
+				DEVTH: false,
+				IDE: false,
+				EXP: false,
+			},
+			reason: '',
+		},
+		expects: {
+			1: false,
+			2: false,
+			3: false,
+			4: false,
+		},
+		review: '',
+	}); // 설문조사 데이터 저장을 위한 formData 상태
 	const [isOpen, setIsOpen] = useState(false); // modal 열고닫기를 위한 상태
 	const [participantsInfo, setParticipantsInfo] = useState({
 		isLoading: false,
 		data: [],
 	}); // 설문조사 참여자 리스트 저장을 위한 상태
 	const [flagForFetch, setFlagForFetch] = useState(false); // 제출 후 result view 리렌더링을 위한 상태
-	console.log(participantsInfo);
 
 	/**
 	 * 전체 참가자 정보를 가져오는 함수
@@ -88,7 +86,6 @@ function App() {
 	const getAllParticipantsInfo = async () => {
 		// 데이터 호출 중인데 또 스크롤 했을 때 중복 호출 막는 기능, throttle
 		if (participantsInfo.isLoading) {
-			console.log('prevent fetching');
 			return;
 		}
 
@@ -103,8 +100,8 @@ function App() {
 			setParticipantsInfo({
 				isLoading: false,
 				isError: false,
-				data: [...participantsInfo.data, ...response.data], // 무한스크롤 시
-				// data: response.data,
+				// data: [...participantsInfo.data, ...response.data], // 무한스크롤 시
+				data: response.data,
 				error: null,
 			});
 		} catch (error) {
@@ -117,7 +114,6 @@ function App() {
 			console.log({ error });
 		}
 	};
-	console.log(participantsInfo);
 
 	/**
 	 * 화면이 redering 될 때 전체 참가자 정보를 가져오는 useEffect
@@ -131,12 +127,17 @@ function App() {
 			localStorage.getItem('activeStep') || '0',
 			10,
 		);
-		setFormData(
-			JSON.parse(localStorage.getItem('formData' || resetFormData)),
-		);
-		if (activeStep >= 0) {
-			setIsOpen(true);
+		const storedFormData = JSON.parse(localStorage.getItem('formData'));
+
+		if (storedFormData) {
+			setFormData(storedFormData);
+		} else {
+			setFormData(resetFormData);
 		}
+
+		// if (activeStep >= 0) {
+		// 	setIsOpen(true);
+		// }
 	}, []);
 
 	/**
@@ -149,23 +150,6 @@ function App() {
 			'formData',
 			JSON.stringify({ ...formData, ...newFormData }),
 		);
-	};
-
-	/**
-	 * Modal에서 전체동의에 대한 체크박스를 관리하는 함수
-	 * @param {boolean} checkAll
-	 */
-	const checkAllAgreements = (checkAll) => {
-		const allAgreements = {
-			personal: checkAll,
-			marketing: checkAll,
-			advertisement: checkAll,
-		};
-
-		setFormData({
-			...formData,
-			agreements: { ...allAgreements },
-		});
 	};
 
 	// 모달의 toggle 'X' button 제어하는 함수
@@ -190,7 +174,7 @@ function App() {
 				});
 				handleToggle(); // 제출 성공이면 모달 닫기
 				setFormData(resetFormData()); // 모달의 form data 초기화
-				localStorage.clear();
+				localStorage.clear(); // 로컬스토리지 초기화
 			}
 			return result;
 		} catch (error) {
@@ -226,7 +210,6 @@ function App() {
 							handleToggle={handleToggle}
 							formData={formData}
 							changeFormData={changeFormData}
-							checkAllAgreements={checkAllAgreements}
 							submitSurveyFormData={submitSurveyFormData}
 						/>
 					)}
