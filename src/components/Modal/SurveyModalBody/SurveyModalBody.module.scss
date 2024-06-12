@@ -1,0 +1,64 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.container__header {
+    display: flex;
+    flex-direction: column;
+}
+
+.container__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.container__step2__body {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+.container__step2__body__ele{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.container__step2__btns{
+    display: flex;
+    gap: 16px;
+}
+
+.container__step2__checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.container__step2__checkbox {
+    display: flex;
+    width: 100%;
+    & > * {
+        flex: 1;
+    }
+}
+
+.container__step3__body{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.container__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer__btns {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}

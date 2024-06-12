@@ -4,6 +4,11 @@
   max-width: 50rem /* 800px -> 50rem */;
 }
 
+.outer{
+  height: 100vh;
+  overflow-y: scroll;
+}
+
 .main {
   margin-top: 1rem /* 16px -> 1rem */;
 }
